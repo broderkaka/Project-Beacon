@@ -1,0 +1,16 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+jar {
+    baseName = 'Project-Beacon'
+    version =  '0.0.1'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('log4j:log4j:1.2.+')
+    testCompile('junit:junit:4.+')
+}
