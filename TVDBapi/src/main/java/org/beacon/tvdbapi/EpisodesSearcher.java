@@ -20,6 +20,8 @@ import org.xml.sax.SAXException;
  */
 public class EpisodesSearcher {
 
+    final static Logger logger = Logger.getLogger(EpisodesSearcher.class);
+
     private SAXParser saxParser;
     private EpisodeHandler handler;
     private final String apiurl = "http://www.thetvdb.com/api/%s/series/%s/all/%s.zip";
@@ -46,9 +48,7 @@ public class EpisodesSearcher {
                 return this.handler.getEpisodes();
             }
         }
-        // log failed to find xml file
+        logger.warn(String.format("%s.xml was not found when searched for TVShow with id: %s", this.lang, tvShowId));
         return new ArrayList<>();
-
     }
-
 }

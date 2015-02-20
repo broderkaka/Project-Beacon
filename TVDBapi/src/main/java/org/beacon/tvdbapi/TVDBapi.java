@@ -5,9 +5,13 @@ import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.log4j.Logger;
+import org.beacon.tvdbapi.DataTypes.TVShow;
 import org.xml.sax.SAXException;
 
 public class TVDBapi {
+
+    final static Logger logger = Logger.getLogger(TVDBapi.class);
 
     public ArrayList<TVShow> getTVShows(String tvShowName) {
         ArrayList<TVShow> tvShows = new ArrayList<>();
@@ -17,8 +21,7 @@ public class TVDBapi {
             tvShows = sp.search(tvShowName);
         } catch (ParserConfigurationException | SAXException | IOException e)
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error("{}", e );
         }
         return tvShows;
     }
