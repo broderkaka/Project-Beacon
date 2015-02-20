@@ -18,6 +18,18 @@ import org.xml.sax.helpers.DefaultHandler;
  * Get a list of TVshows matching a search term from The TVDB.
  * TVDB returns a XML document with all matching shows.
  * The XML is parsed with a SAXparser.
+ * The TVDB xmlformat:
+ * <Data>
+ *  <Series>
+ *      <seriesid></seriesid>
+ *      <language></language>
+ *      <SeriesName></SeriesName>
+ *      <Overview></Overview>
+ *      <FirstAired></FirstAired>
+ *      <Network></Network>
+ *      <id></id>
+ *  </Series>
+ * </Data>
  */
 
 public class TVShowSearchParser {
