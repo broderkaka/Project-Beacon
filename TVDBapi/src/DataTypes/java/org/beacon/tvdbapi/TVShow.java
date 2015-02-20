@@ -1,12 +1,20 @@
 package org.beacon.tvdbapi;
 
+import java.util.ArrayList;
+
 /**
  * Keep a record of a TVShow
  */
 public class TVShow {
+
     private String id;
     private String lang;
     private String name;
+    private ArrayList<Episode> episodes;
+
+    public TVShow() {
+        this.episodes = new ArrayList<>();
+    }
 
     public String getId() {
         return id;
@@ -32,6 +40,7 @@ public class TVShow {
         this.name = name;
     }
 
-
-
+    public void addEpisode(Episode episode) {
+        this.episodes.add(episode);
+    }
 }
