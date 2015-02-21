@@ -5,13 +5,13 @@ import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.log4j.Logger;
-import org.beacon.tvdbapi.DataTypes.TVShow;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 public class TVDBapi {
 
-    final static Logger logger = Logger.getLogger(TVDBapi.class);
+    final static Logger logger = LoggerFactory.getLogger(TVDBapi.class);
 
     public ArrayList<TVShow> getTVShows(String tvShowName) {
         ArrayList<TVShow> tvShows = new ArrayList<>();

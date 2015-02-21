@@ -11,6 +11,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 /**
@@ -20,7 +22,7 @@ import org.xml.sax.SAXException;
  */
 public class EpisodesSearcher {
 
-    final static Logger logger = Logger.getLogger(EpisodesSearcher.class);
+    final static Logger logger = LoggerFactory.getLogger(EpisodesSearcher.class);
 
     private SAXParser saxParser;
     private EpisodeHandler handler;
