@@ -1,13 +1,13 @@
-package org.beacon.tvdbapi;
+ package org.beacon.tvdbapi;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.XMLStreamException;
 
+import org.beacon.tvdbapi.datatypes.TVShow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
 
 public class TVDBapi {
 
@@ -19,7 +19,7 @@ public class TVDBapi {
         {
             TVShowSearcher sp = new TVShowSearcher();
             tvShows = sp.search(tvShowName);
-        } catch (ParserConfigurationException | SAXException | IOException e)
+        } catch (IOException | XMLStreamException e)
         {
             logger.error("{}", e );
         }

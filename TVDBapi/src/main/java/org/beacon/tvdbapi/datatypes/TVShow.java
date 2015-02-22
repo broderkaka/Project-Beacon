@@ -1,4 +1,4 @@
-package org.beacon.tvdbapi;
+package org.beacon.tvdbapi.datatypes;
 
 import java.util.ArrayList;
 

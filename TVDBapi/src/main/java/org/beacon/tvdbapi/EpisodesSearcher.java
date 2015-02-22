@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 
+import org.beacon.tvdbapi.datatypes.Episode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.SAXException;
 
 /**
  * Fetch all episodes from The TVDB tvshows. TVDB returns a zip file with three
@@ -22,35 +23,129 @@ import org.xml.sax.SAXException;
  */
 public class EpisodesSearcher {
 
-    final static Logger logger = LoggerFactory.getLogger(EpisodesSearcher.class);
+    private static final String SEASONID = "seasonid";
+	private static final String LASTUPDATED = "lastupdated";
+	private static final String SEASONNUMBER = "seasonnumber";
+	private static final String LANGUAGE = "language";
+	private static final String FIRSTAIRED = "firstaired";
+	private static final String EPISODENUMBER = "episodenumber";
+	private static final String EPISODENAME = "episodename";
+	private static final String ID = "id";
+	private static final String EPISODE = "episode";
 
-    private SAXParser saxParser;
-    private EpisodeHandler handler;
-    private final String apiurl = "http://www.thetvdb.com/api/%s/series/%s/all/%s.zip";
-    private final String lang = "en";
-    private final String apiKey = "040D2018CD1FCCD2";
+	final static Logger logger = LoggerFactory.getLogger(EpisodesSearcher.class);
 
-    public EpisodesSearcher() throws ParserConfigurationException, SAXException {
-        SAXParserFactory factory = SAXParserFactory.newInstance();
-        this.saxParser = factory.newSAXParser();
-        this.handler = new EpisodeHandler(this.saxParser.getXMLReader());
+    private static final String APIURL = "http://www.thetvdb.com/api/%s/series/%s/all/%s.zip";
+    private static final String LANG = "en";
+    private static final String APIKEY = "040D2018CD1FCCD2";
+    
+    private XMLInputFactory factory;
+
+    public EpisodesSearcher() {
+    	factory = XMLInputFactory.newInstance();
     }
 
-    public ArrayList<Episode> loadEpisodes(String tvShowId) throws IOException, SAXException {
-        URL url = new URL(String.format(this.apiurl, this.apiKey, tvShowId, this.lang));
+    public ArrayList<Episode> loadEpisodes(String tvShowId) throws XMLStreamException, IOException {
+        URL url = new URL(String.format(APIURL, APIKEY, tvShowId, LANG));
 
         InputStream in = url.openStream();
-        ZipInputStream zipStream = new ZipInputStream(in);
-        ZipEntry entry;
-        while ((entry = zipStream.getNextEntry()) != null)
+        ZipInputStream zipStream = findXMLinZip(in);
+        if(zipStream != null)
         {
-            if (entry.getName().equalsIgnoreCase(this.lang + ".xml"))
-            {
-                this.saxParser.parse(zipStream, this.handler);
-                return this.handler.getEpisodes();
-            }
+        	XMLStreamReader reader = factory.createXMLStreamReader(zipStream);
+        	return parse(reader);
         }
-        logger.warn(String.format("%s.xml was not found when searched for TVShow with id: %s", this.lang, tvShowId));
+        logger.warn(String.format("%s.xml was not found when searched for TVShow with id: %s", EpisodesSearcher.LANG, tvShowId));
         return new ArrayList<>();
     }
+
+	private ZipInputStream findXMLinZip(InputStream in) throws IOException {
+		ZipInputStream zipStream = new ZipInputStream(in);
+		ZipEntry entry;
+		while ((entry = zipStream.getNextEntry()) != null)
+        {
+            if (entry.getName().equalsIgnoreCase(EpisodesSearcher.LANG + ".xml"))
+            {
+            	return zipStream;
+            }
+        }
+		return null;
+	}
+
+	private ArrayList<Episode> parse(XMLStreamReader reader) throws XMLStreamException {
+		ArrayList<Episode> episodes = new ArrayList<>();
+		while(reader.hasNext())
+		{
+			if(reader.next() == XMLStreamConstants.START_ELEMENT)
+			{
+				if (EPISODE.equals(reader.getLocalName().toLowerCase()))
+				{
+					episodes.add(parseEpisode(reader));
+				}
+			}
+		}
+		return episodes;
+	}
+
+	private Episode parseEpisode(XMLStreamReader reader) throws XMLStreamException {
+		Episode episode = new Episode();
+		readerloop: while(reader.hasNext())
+		{
+			switch (reader.next()) {
+			case XMLStreamConstants.START_ELEMENT:
+				parseTag(reader, episode);
+				break;
+			case XMLStreamConstants.END_ELEMENT:
+				if(EPISODE.equals(reader.getLocalName().toLowerCase()))
+				{
+					break readerloop;
+				}
+			default:
+				break;
+			}
+		}
+		return episode;
+	}
+
+	private void parseTag(XMLStreamReader reader, Episode episode) throws XMLStreamException {
+		String tag = reader.getLocalName().toLowerCase();
+		switch (tag) {
+		case ID:
+			episode.setId(getContent(reader));
+			break;
+		case EPISODENAME:
+			episode.setEpisodeName(getContent(reader));
+			break;
+		case EPISODENUMBER:
+			episode.setEpisodeNumber(getContent(reader));
+			break;
+		case FIRSTAIRED:
+			episode.setFirstAired(getContent(reader));
+			break;
+		case LANGUAGE:
+			episode.setLanguage(getContent(reader));
+			break;
+		case SEASONNUMBER:
+			episode.setSeasonNumber(getContent(reader));
+			break;
+		case LASTUPDATED:
+			episode.setLastupdated(getContent(reader));
+			break;
+		case SEASONID:
+			episode.setSeasonid(getContent(reader));
+			break;
+		default:
+			break;
+		}
+	}
+	
+	private String getContent(XMLStreamReader reader) throws XMLStreamException
+	{
+		if (reader.next() == XMLStreamReader.CHARACTERS)
+		{
+			return reader.getText();
+		}
+		logger.warn("failed to find content while parsing tag");
+		return  null;
+	}
 }
