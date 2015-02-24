@@ -1,34 +1,20 @@
 apply plugin: 'java'
+apply plugin: 'eclipse'
 
+repositories {
+        mavenCentral()
+}
+	
 jar {
     baseName = 'Project-Beacon'
     version =  '0.0.1'
 }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'eclipse'
-    group = 'Project-Beacon'
-    version = '0.1'
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-	compile('org.slf4j:slf4j-api:1.7.10')
-	compile('org.slf4j:slf4j-log4j12:1.7.10')
-        compile('org.apache.logging.log4j:log4j:2.1')
-        testCompile('junit:junit:4.+')
-    }
+dependencies {
+compile('org.slf4j:slf4j-api:1.7.10')
+compile('org.slf4j:slf4j-log4j12:1.7.10')
+compile('org.apache.logging.log4j:log4j:2.1')
+testCompile('junit:junit:4.+')
 }
 
-project(':Project-Beacon') {
 
-}
-
-project(':TVDBapi') {
-    jar {
-        manifest {
-            attributes 'Main-Class': 'org.beacon.tvdbapi.HelloWorld'
-        }
-    }
-}
