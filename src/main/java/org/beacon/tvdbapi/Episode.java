@@ -74,4 +74,20 @@ public class Episode {
 	public void setSeasonid(String seasonid) {
 		this.seasonid = seasonid;
 	}
+
+	public String getFormatedSeasonNumber() {
+		if (this.seasonNumber.length() == 1)
+		{
+			return "0" + this.seasonNumber;
+		}
+		return this.seasonNumber;
+	}
+	
+	public String getFormatedEpisodeNumber() {
+		if (this.episodeNumber.length() == 1)
+		{
+			return "0" + this.episodeNumber;
+		}
+		return this.episodeNumber;
+	}
 }
