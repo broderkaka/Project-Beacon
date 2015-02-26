@@ -1,6 +1,7 @@
 package org.beacon.torrentfinder;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,6 +9,7 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.ws.rs.core.UriBuilder;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
@@ -26,28 +28,38 @@ public class ThePirateBaySearcher {
 	private final static String TPBURL = "https://thepiratebay.se/search/";
 	private final static String TPBURLSUFFIX = "/0/8/0";
 	
-	private final String TR = "tr";
-	private final String DIV = "div";
-	private final String CLASS = "class";
-	private final String DETNAME = "detName";
-	private final String A = "a";
+
 	
 	final static Logger logger = LoggerFactory.getLogger(TVShowSearcher.class);
+
+	private static final String TR = "tr";
+	private static final String DIV = "div";
+	private static final String CLASS = "class";
+	private static final String DETNAME = "detName";
+	private static final String A = "a";
+	private static final String HREF = "href";
+	private static final String TD = "td";
+	private static final String ALIGN = "right";
+	private static final String RIGHT = "right";
+
+	
 	
 	public ThePirateBaySearcher() {
 		factory = XMLInputFactory.newInstance();
 		factory.setProperty(XMLInputFactory.IS_COALESCING, true);
 	}
 	
-    public void findTorrents(TVShow tvshow, Episode episode) throws XMLStreamException, IOException
+    public ArrayList<Torrent> findTorrents(TVShow tvshow, Episode episode) throws XMLStreamException, IOException
     {
     	String searchString = buildSearchString(tvshow, episode);
-    	String searchURL = String.format("%s%s%s", TPBURL, searchString, TPBURLSUFFIX);
+    	String searchURL = String.format("%s", TPBURL, searchString, TPBURLSUFFIX);
     	URL url = new URL(searchURL);
+    	HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+    	InputStream s = con.getInputStream();
 		XMLStreamReader reader = factory
-				.createXMLStreamReader(url.openStream());
+				.createXMLStreamReader(s);
 		
-		
+		return findTR(reader);
 		
     }
 
@@ -56,7 +68,11 @@ public class ThePirateBaySearcher {
 		while (reader.hasNext()) {
 			if (reader.next() == XMLStreamConstants.START_ELEMENT) {
 				if (TR.equals(reader.getLocalName().toLowerCase())) {
-					torrents.add(parseTR(reader));
+					Torrent torrent = parseTR(reader);
+					if (torrent.hasValues())
+					{
+						torrents.add(torrent);
+					}
 				}
 			}
 		}
@@ -65,20 +81,22 @@ public class ThePirateBaySearcher {
 
 	private Torrent parseTR(XMLStreamReader reader) throws XMLStreamException {
 		Torrent torrent = new Torrent();
-		readerloop: while (reader.hasNext()) {
-			switch (reader.next()) {
-			case XMLStreamConstants.START_ELEMENT:
-				parseTag(reader, torrent);
-				break;
-			case XMLStreamConstants.END_ELEMENT:
-				if (TR.equals(reader.getLocalName().toLowerCase()))
+		while (reader.hasNext()) {
+			int event = reader.next();
+			String name = reader.getLocalName().toLowerCase();
+			if (TR.equals(name))
+			{
+				if (event == XMLStreamConstants.START_ELEMENT)
 				{
-					break readerloop;
+					parseTag(reader, torrent);
 				}
-				break;
-			default:
-				break;
+				else
+				{
+					break;
+				}
+				
 			}
+			
 		}
 		return torrent;
 	}
@@ -89,11 +107,49 @@ public class ThePirateBaySearcher {
 		case DIV:
 			parseDIV(reader, torrent);
 			break;
+		case A:
+			torrent.setMagnetLink(parseOuterA(reader));
+			break;
+		case TD:
+			parseTD(reader, torrent);
+			break;
+		default:
+			break;
 		}
+		
+			
 		
 	}
 
 
+
+	private void parseTD(XMLStreamReader reader, Torrent torrent) throws XMLStreamException {
+		if (!ALIGN.equals(reader.getAttributeLocalName(0)))
+		{
+			return;
+		}
+		if (!RIGHT.equals(reader.getAttributeValue(0)))
+		{
+			return;
+		}
+		if (torrent.getSeeders() == null)
+		{
+			torrent.setSeeders(getContent(reader));
+		}
+		else
+		{
+			torrent.setLeechers(getContent(reader));
+		}
+	}
+
+	private String parseOuterA(XMLStreamReader reader) {
+		if (HREF.equals(reader.getAttributeLocalName(0)))
+		{
+			return reader.getAttributeValue(0);
+		}
+		return null;
+		
+	}
 
 	private void parseDIV(XMLStreamReader reader, Torrent torrent) throws XMLStreamException {
 		if (reader.getAttributeCount() == 0 ||
@@ -123,7 +179,7 @@ public class ThePirateBaySearcher {
 		}
 	}
 
-	private void parseA(XMLStreamReader reader, Torrent torrent) {
+	private void parseA(XMLStreamReader reader, Torrent torrent) throws XMLStreamException {
 		torrent.setTitle(getContent(reader));
 		
 	}

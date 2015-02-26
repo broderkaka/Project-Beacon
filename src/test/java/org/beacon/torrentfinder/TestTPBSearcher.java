@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -18,9 +19,14 @@ public class TestTPBSearcher {
 		TVShow t = new TVShow();
 		t.setName("The big bang theory");
 		Episode e = new Episode();
-		e.setEpisodeNumber("2");
-		e.setSeasonNumber("12");
-		new ThePirateBaySearcher().findTorrents(t, e);
+		e.setEpisodeNumber("5");
+		e.setSeasonNumber("5");
+		ArrayList<Torrent> list = new ThePirateBaySearcher().findTorrents(t, e);
+		for(Torrent to: list)
+		{
+			System.out.println(to.getTitle());
+			System.out.println(to.getSeeders() + ":" + to.getLeechers());
+		}
 	}
 
 }
