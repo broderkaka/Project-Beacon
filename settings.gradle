@@ -1,0 +1,6 @@
+rootProject.name = 'Project-Beacon'
+
+include 'Server'
+
+include 'Beacon'
+

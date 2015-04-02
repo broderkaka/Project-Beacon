@@ -22,9 +22,16 @@ hs_err_pid*
 .project
 .classpath
 .settings
+jettytemp
+logs
+Server/temp
 
 #gradle
 .gradle
 build
 */build
+
+#idea
+.idea
+*.iml
 
