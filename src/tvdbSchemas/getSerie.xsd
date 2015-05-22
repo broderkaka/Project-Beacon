@@ -1,0 +1,78 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
+           elementFormDefault="qualified">
+    <xs:element name="Data">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Series">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element type="xs:int" name="id" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Actors" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Airs_DayOfWeek" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Airs_Time" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="ContentRating" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:date" name="FirstAired" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Genre" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="IMDB_ID" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Language" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Network" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="NetworkID" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Overview" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:float" name="Rating" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:short" name="RatingCount" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:byte" name="Runtime" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:int" name="SeriesID" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="SeriesName" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Status" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="added" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="addedBy" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="banner" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="fanart" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:int" name="lastupdated" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="poster" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="zap2it_id" maxOccurs="1" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="Episode" maxOccurs="unbounded" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element type="xs:int" name="id" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:byte" name="Combined_episodenumber" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:byte" name="Combined_season" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="DVD_chapter" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="DVD_discid" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="DVD_episodenumber" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="DVD_season" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Director" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:byte" name="EpImgFlag" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="EpisodeName" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:byte" name="EpisodeNumber" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:date" name="FirstAired" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="GuestStars" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="IMDB_ID" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Language" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Overview" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="ProductionCode" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:float" name="Rating" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:byte" name="RatingCount" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:byte" name="SeasonNumber" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Writer" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="absolute_number" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:byte" name="airsafter_season" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="airsbefore_episode" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="airsbefore_season" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="filename" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:int" name="lastupdated" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:short" name="seasonid" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:int" name="seriesid" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="thumb_added" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:short" name="thumb_height" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:short" name="thumb_width" maxOccurs="1" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

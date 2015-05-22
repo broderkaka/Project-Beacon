@@ -1,0 +1,26 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
+           elementFormDefault="qualified">
+    <xs:element name="Data">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Series" maxOccurs="unbounded" minOccurs="0">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element type="xs:int" name="seriesid" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="language" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="SeriesName" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Overview" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="banner" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:date" name="FirstAired" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Network" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:int" name="id" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="zap2it_id" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="IMDB_ID" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="AliasNames" maxOccurs="1" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

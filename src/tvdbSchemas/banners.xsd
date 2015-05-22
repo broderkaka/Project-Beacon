@@ -1,0 +1,27 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified"
+           elementFormDefault="qualified">
+    <xs:element name="Banners">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Banner" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element type="xs:int" name="id" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="BannerPath" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="BannerType" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="BannerType2" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Colors" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Language" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="Season" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:float" name="Rating" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:byte" name="RatingCount" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="SeriesName" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="ThumbnailPath" maxOccurs="1" minOccurs="0"/>
+                            <xs:element type="xs:string" name="VignettePath" maxOccurs="1" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

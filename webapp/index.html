@@ -1,0 +1,89 @@
+<!doctype html>
+<html ng-app="ui.bootstrap.demo">
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="beacon.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.0/ui-bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.0/ui-bootstrap-tpls.min.js"></script>
+
+
+
+</head>
+<body>
+
+
+<div ng-controller="TabsDemoCtrl" align="center">
+
+    <tabset>
+        <tab heading="Add TVShow">
+        <div ng-controller="SearchTvShow">
+            <label>Search:
+                <input type="text" name="input" ng-model="query">
+            </label>
+            <button ng-click="search()" class="btn btn-primary">Search</button>
+            <accordion close-others="true">
+                <accordion-group ng-style="{ 'width' : '760px'}" heading="{{show.show_name}}" ng-repeat="show in tvShows">
+                    <accordion-heading>
+                        <img ng-src={{show.banner}} style="max-width:100%;max-height:100%;"alt="{{show.name}}">
+                    </accordion-heading>
+                    <table width="100%">
+                        <tr>
+                           <td ><b>{{show.name}}</b></td>
+                            <td align="right">{{show.firstAired}}</td>
+                        </tr>
+                        <tr>
+                            <td ><button ng-click="add(show)" class="btn btn-primary">Add</button></td>
+                            <td align="right"></td>
+                        </tr>
+
+                    </table>
+                </accordion-group>
+            </accordion>
+        </div>
+
+
+        </tab>
+
+
+        <tab heading="My TvShows" select="loadMyShows()" ng-controller="MyTvShow">
+
+                <accordion close-others="true">
+                    <accordion-group ng-style="{ 'width' : '760px'}" ng-repeat="show in shows">
+                        <accordion-heading>
+
+                            <img ng-src={{show.show_banner[0]}} style="max-width:100%;max-height:100%;"alt="{{show.show_name}}">
+                        </accordion-heading>
+                        <accordion close-others="true">
+                            <accordion-group ng-style="{ 'width' : '760px'}" ng-repeat="season in show.show_seasons">
+                                <accordion-heading>
+                                    <img ng-src={{season.season_banner[0]}} style="max-width:100%;max-height:100%;"alt="Season {{season.season_number}}">
+                                </accordion-heading>
+                                <div ng-repeat="episode in season.season_episodes">
+                                    <table width="100%">
+                                        <tr>
+                                            <td>{{episode.episode_name}}</td>
+                                            <td align="right">
+                                                <button class="btn btn-primary">Download</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td width="70%" >
+                                                <progressbar class="progress-striped" value="{{episode.progress}}" type="success">{{episode.progress}}%</progressbar>
+                                            </td>
+                                            <td width="30%" valign="top">Here be status</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </accordion-group>
+                        </accordion>
+                    </accordion-group>
+                </accordion>
+        </tab>
+    </tabset>
+
+
+</div>
+
+</body>
+</html>
